@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:intl/intl.dart';
 import 'package:money/models/transaction.dart';
 import '../models/transaction.dart';
@@ -14,7 +15,8 @@ class TransactionList extends StatelessWidget {
     return Container(
       height: 510,
       child: _transactions.isEmpty
-          ? Column(children: [
+          ? LayoutBuilder(builder: (ctx, constraints){
+            return Column(children: [
               Text(
                 'No Transactions added yet',
                 style: Theme.of(context).textTheme.title,
@@ -23,12 +25,13 @@ class TransactionList extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                  height: 300,
+                  height: constraints.maxHeight * 0.6,
                   child: Image.asset(
                     'assets/images/waiting.png',
                     fit: BoxFit.cover,
                   ))
-            ])
+            ]);
+          })  
           : ListView.builder(
               itemCount: _transactions.length,
               itemBuilder: (ctx, index) {

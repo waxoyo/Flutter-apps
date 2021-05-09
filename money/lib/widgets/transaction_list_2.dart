@@ -11,10 +11,9 @@ class TransactionList2 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 400,//overwritten by expanded
-      child: _transactions.isEmpty
-          ? Column(children: [
+    return _transactions.isEmpty
+        ? LayoutBuilder(builder: (ctx, constraints) {
+            return Column(children: [
               Text(
                 'No Transactions added yet',
                 style: Theme.of(context).textTheme.title,
@@ -23,47 +22,56 @@ class TransactionList2 extends StatelessWidget {
                 height: 20,
               ),
               Container(
-                  height: 300,
+                  height: constraints.maxHeight * 0.7,
                   child: Image.asset(
                     'assets/images/waiting.png',
                     fit: BoxFit.cover,
                   ))
-            ])
-          : ListView.builder(
-              itemCount: _transactions.length,
-              itemBuilder: (ctx, index) {
-                return Card(
-                  margin: EdgeInsets.symmetric(
-                    vertical: 2,
-                    horizontal: 5,
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 40,
-                      child: Padding(
-                        padding: EdgeInsets.all(15),
-                        child: FittedBox(
-                          child: Text('\$${_transactions[index].amount}'),
-                        ),
+            ]);
+          })
+        : ListView.builder(
+            itemCount: _transactions.length,
+            itemBuilder: (ctx, index) {
+              return Card(
+                margin: EdgeInsets.symmetric(
+                  vertical: 2,
+                  horizontal: 5,
+                ),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 40,
+                    child: Padding(
+                      padding: EdgeInsets.all(15),
+                      child: FittedBox(
+                        child: Text('\$${_transactions[index].amount}'),
                       ),
                     ),
-                    title: Text(
-                      _transactions[index].title,
-                      style: Theme.of(context).textTheme.title,
-                    ),
-                    subtitle: Text(DateFormat('dd-MMM, yyyy')
-                        .format(_transactions[index].date)),
-                    trailing: IconButton(
-                      icon: Icon(Icons.delete),
-                      color: Theme.of(context).errorColor,
-                      onPressed: () {
-                        _deleteTransaction(_transactions[index].id);
-                      },
-                    ),
                   ),
-                );
-              },
-            ),
-    );
+                  title: Text(
+                    _transactions[index].title,
+                    style: Theme.of(context).textTheme.title,
+                  ),
+                  subtitle: Text(DateFormat('dd-MMM, yyyy')
+                      .format(_transactions[index].date)),
+                  trailing: MediaQuery.of(context).size.width > 390
+                      ? FlatButton.icon(
+                          icon: Icon(Icons.delete),
+                          label: Text('Delete'),
+                          textColor: Theme.of(context).errorColor,
+                          onPressed: () {
+                            _deleteTransaction(_transactions[index].id);
+                          },
+                        )
+                      : IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Theme.of(context).errorColor,
+                          onPressed: () {
+                            _deleteTransaction(_transactions[index].id);
+                          },
+                        ),
+                ),
+              );
+            },
+          );
   }
 }
