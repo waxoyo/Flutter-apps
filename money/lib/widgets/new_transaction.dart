@@ -8,16 +8,43 @@ import './adaptive_button.dart';
 class NewTransaction extends StatefulWidget {
   final Function _addNewTransaction;
 
-  NewTransaction(this._addNewTransaction);
+  NewTransaction(this._addNewTransaction) {
+    print('constructor NewTransaction Widg');
+  }
 
   @override
-  _NewTransactionState createState() => _NewTransactionState();
+  _NewTransactionState createState() {
+    print('createState NewTransaction widg');
+    return _NewTransactionState();
+  }
 }
 
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime _selectedDate;
+
+  _NewTransactionState(){
+    print('Constructor NewTransaction state');
+  }
+
+  @override
+  void initState() {
+    print('init state NewTransaction state');
+    super.initState();
+  }
+
+  @override
+  void didUpdateWidget(covariant NewTransaction oldWidget) {
+    print('didUpdateWidget NewTransaction state');
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    print('dispose NewTransaction state()');
+    super.dispose();
+  }
 
   void _submitData() {
     if (_amountController.text.isEmpty) {
@@ -97,7 +124,7 @@ class _NewTransactionState extends State<NewTransaction> {
                             : 'Selected Date: ${DateFormat.yMd().format(_selectedDate)}',
                       ),
                     ),
-                    AdaptiveButton('Choose Date',_presentDatePicker),
+                    AdaptiveButton('Choose Date', _presentDatePicker),
                   ],
                 ),
               ),
